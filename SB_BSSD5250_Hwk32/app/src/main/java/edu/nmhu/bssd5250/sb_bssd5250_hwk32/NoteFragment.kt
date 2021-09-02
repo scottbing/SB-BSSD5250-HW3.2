@@ -68,34 +68,15 @@ class NoteFragment : Fragment() {
         //End Text for the left side
 
         //Edit button on hte right side
-        val editButton = Button(requireContext()).apply {
-            id = View.generateViewId()
-            text = "edit"
-            layoutParams = RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            (layoutParams as RelativeLayout.LayoutParams).addRule(
-                RelativeLayout.ALIGN_PARENT_RIGHT)
-
-            setOnClickListener {
-                val noteEditorDialog = NoteEditorDialog()
-                noteEditorDialog.show(parentFragmentManager,
-                    noteEditorDialog.tag)
-            }
-
-        }
-        //End of editButton
-
-        //Edit button on hte right side
         val deleteButton = Button(requireContext()).apply {
+            id = View.generateViewId()
             text = "Delete"
             layoutParams = RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
             )
             (layoutParams as RelativeLayout.LayoutParams).addRule(
-                RelativeLayout.LEFT_OF, editButton.id)
+                RelativeLayout.ALIGN_PARENT_RIGHT)
 
             setOnClickListener {
                 AlertDialog.Builder(requireContext()).apply {
@@ -112,6 +93,26 @@ class NoteFragment : Fragment() {
                 }
 
             }
+        }
+        //End of editButton
+
+        //Edit button on hte right side
+        val editButton = Button(requireContext()).apply {
+            text = "edit"
+            layoutParams = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+            (layoutParams as RelativeLayout.LayoutParams).addRule(
+
+                RelativeLayout.LEFT_OF, deleteButton.id)
+
+            setOnClickListener {
+                val noteEditorDialog = NoteEditorDialog()
+                noteEditorDialog.show(parentFragmentManager,
+                    noteEditorDialog.tag)
+            }
+
         }
         //End of editButton
 
