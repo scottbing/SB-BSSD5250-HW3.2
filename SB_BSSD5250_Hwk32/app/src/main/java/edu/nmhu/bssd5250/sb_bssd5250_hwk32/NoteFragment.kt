@@ -33,6 +33,8 @@ class NoteFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var nameView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -42,6 +44,7 @@ class NoteFragment : Fragment() {
 
         setFragmentResultListener("noteDataChange") { requestLey, bundle ->
             val result = bundle.getString("nameKey")
+            nameView.text = result.toString()
             Log.d("NoteFragment",result.toString())
         }
     }
@@ -51,7 +54,7 @@ class NoteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val nameView = TextView(context).apply {
+        nameView = TextView(context).apply {
             setText(R.string.name_place_holder)
         }
         val dateView = TextView(context).apply {

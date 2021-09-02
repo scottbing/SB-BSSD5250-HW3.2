@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 
 class NoteEditorDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -31,7 +33,11 @@ class NoteEditorDialog : DialogFragment() {
             setTitle("Note Editor")
             setMessage("Edit Content")
             setView(linearLayout)
-            setPositiveButton("Save") { _,_ -> }
+            setPositiveButton("Save") { _,_ ->
+                val result = editName.text.toString()
+                setFragmentResult("noteDataChange",
+                    bundleOf("nameKey" to result))
+            }
             setNegativeButton("Cancel") { _,_ -> }
         }
         return ad.create()
