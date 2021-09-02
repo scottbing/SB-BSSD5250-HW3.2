@@ -34,6 +34,8 @@ class NoteFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var nameView: TextView
+    private lateinit var dateView: TextView
+    private lateinit var descView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +44,16 @@ class NoteFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        setFragmentResultListener("noteDataChange") { requestLey, bundle ->
-            val result = bundle.getString("nameKey")
-            nameView.text = result.toString()
-            Log.d("NoteFragment",result.toString())
+        setFragmentResultListener("noteDataChange") { _, bundle ->
+            val name = bundle.getString("nameKey")
+            nameView.text = name.toString()
+            val date = bundle.getString("dateKey")
+            dateView.text = date.toString()
+            val desc = bundle.getString("descKey")
+            descView.text = desc.toString()
+            Log.d("NoteFragment",name.toString())
+            Log.d("NoteFragment",date.toString())
+            Log.d("NoteFragment",desc.toString())
         }
     }
 
@@ -57,10 +65,10 @@ class NoteFragment : Fragment() {
         nameView = TextView(context).apply {
             setText(R.string.name_place_holder)
         }
-        val dateView = TextView(context).apply {
+        dateView = TextView(context).apply {
             setText(R.string.date_place_holder)
         }
-        val descView = TextView(context).apply {
+        descView = TextView(context).apply {
             setText(R.string.desc_place_holder)
         }
 
@@ -78,7 +86,7 @@ class NoteFragment : Fragment() {
         }
         //End Text for the left side
 
-        //Edit button on hte right side
+        //Deletebutton on hte right side
         val deleteButton = Button(requireContext()).apply {
             id = View.generateViewId()
             text = "Delete"

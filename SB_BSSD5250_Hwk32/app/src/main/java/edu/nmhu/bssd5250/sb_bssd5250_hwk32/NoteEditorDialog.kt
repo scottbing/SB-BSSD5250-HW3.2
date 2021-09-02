@@ -13,13 +13,13 @@ class NoteEditorDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val editName = EditText(context).apply {
-            setText(R.string.name_place_holder)
+            setHint(R.string.name_place_holder)
         }
         val editDate = EditText(context).apply {
-            setText(R.string.date_place_holder)
+            setHint(R.string.date_place_holder)
         }
         val editDesc = EditText(context).apply {
-            setText(R.string.desc_place_holder)
+            setHint(R.string.desc_place_holder)
         }
 
         val linearLayout = LinearLayoutCompat(requireContext()).apply{
@@ -34,9 +34,15 @@ class NoteEditorDialog : DialogFragment() {
             setMessage("Edit Content")
             setView(linearLayout)
             setPositiveButton("Save") { _,_ ->
-                val result = editName.text.toString()
+                val name = editName.text.toString()
                 setFragmentResult("noteDataChange",
-                    bundleOf("nameKey" to result))
+                    bundleOf("nameKey" to name))
+                val date = editDate.text.toString()
+                setFragmentResult("noteDataChange",
+                    bundleOf("dateKey" to date))
+                val desc = editDesc.text.toString()
+                setFragmentResult("noteDataChange",
+                    bundleOf("descKey" to desc))
             }
             setNegativeButton("Cancel") { _,_ -> }
         }
@@ -45,6 +51,7 @@ class NoteEditorDialog : DialogFragment() {
 
     companion object {
         const val TAG = "NoteEditorDialog"
+
         @JvmStatic
         fun newInstance() =
             NoteEditorDialog().apply {

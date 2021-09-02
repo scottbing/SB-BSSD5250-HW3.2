@@ -1,5 +1,7 @@
 package edu.nmhu.bssd5250.sb_bssd5250_hwk32
 
+import android.R
+import android.app.AlertDialog
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,9 +10,11 @@ import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.commit
+import android.content.DialogInterface
 
 class MainActivity : AppCompatActivity() {
 
+    private var notes = 0  // number of notes
     private var fid = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +25,20 @@ class MainActivity : AppCompatActivity() {
             setOnClickListener {
                 supportFragmentManager.commit {
                     //setReorderingAllowed(true)
-                    add(fid, NoteFragment.newInstance(), null)
+
+                    // do not add more than 10 notes
+                    if (notes > 3) {
+                        //TODO add Alert Dialog here
+                        val alert: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
+                        alert.setTitle("Notes limit Exceeded")
+                        alert.setMessage("Notes limit of 10 reached")
+                        alert.setPositiveButton("OK", null)
+                        alert.show()
+                    }
+                    else {
+                        add(fid, NoteFragment.newInstance(), null)
+                        notes+=1
+                    }
                 }
             }
         }
