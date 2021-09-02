@@ -6,4 +6,6 @@
     <string name="date_place_holder">Date</string>
     <string name="desc_place_holder">Description</string>
     <string name="edit_place_holder">Edit</string>
+    <string name="order_confirmation">Edit Content</string>
+    <string name="ok">OK</string>
 </resources>

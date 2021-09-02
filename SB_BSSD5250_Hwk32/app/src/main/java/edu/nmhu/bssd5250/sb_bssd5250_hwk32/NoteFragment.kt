@@ -1,17 +1,18 @@
 package edu.nmhu.bssd5250.sb_bssd5250_hwk32
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.fragment.app.commit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,18 +53,6 @@ class NoteFragment : Fragment() {
             setText(R.string.desc_place_holder)
         }
 
-//        val rightParams = LinearLayout.LayoutParams(
-//            LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
-//            LinearLayoutCompat.LayoutParams.WRAP_CONTENT
-//        ).apply {
-//            weight = 1.0f
-//            gravity = Gravity.END
-//        }
-//        rightParams.height = 100;
-//        rightParams.width = 150;
-//        //rightParams.gravity=Gravity.END
-//        editButton.setLayoutParams(rightParams);
-
         val textHolderLL = LinearLayoutCompat(requireContext()).apply {
             orientation = LinearLayoutCompat.VERTICAL
             addView(nameView)
@@ -80,6 +69,7 @@ class NoteFragment : Fragment() {
 
         //Edit button on hte right side
         val editButton = Button(requireContext()).apply {
+            id = View.generateViewId()
             text = "edit"
             layoutParams = RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -88,6 +78,40 @@ class NoteFragment : Fragment() {
             (layoutParams as RelativeLayout.LayoutParams).addRule(
                 RelativeLayout.ALIGN_PARENT_RIGHT)
 
+            setOnClickListener {
+                val noteEditorDialog = NoteEditorDialog()
+                noteEditorDialog.show(parentFragmentManager,
+                    noteEditorDialog.tag)
+            }
+
+        }
+        //End of editButton
+
+        //Edit button on hte right side
+        val deleteButton = Button(requireContext()).apply {
+            text = "Delete"
+            layoutParams = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+            (layoutParams as RelativeLayout.LayoutParams).addRule(
+                RelativeLayout.LEFT_OF, editButton.id)
+
+            setOnClickListener {
+                AlertDialog.Builder(requireContext()).apply {
+                    setTitle("Delete Note?")
+                    setPositiveButton("Yes", DialogInterface.OnClickListener{
+                        dialogInterface, i ->
+                        activity?.supportFragmentManager?.commit {
+                            remove(this@NoteFragment)
+                        }
+                    })
+                    setNegativeButton("No", null) //do nothing if the say no
+                    create()
+                    show()
+                }
+
+            }
         }
         //End of editButton
 
@@ -100,6 +124,7 @@ class NoteFragment : Fragment() {
             )
             addView(textHolderLL)
             addView(editButton)
+            addView(deleteButton)
         }
         // Inflate the layout for this fragment
         return relativeLayout
