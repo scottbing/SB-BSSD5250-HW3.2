@@ -3,6 +3,7 @@ package edu.nmhu.bssd5250.sb_bssd5250_hwk32
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -111,6 +112,7 @@ class NoteFragment : Fragment() {
                 val noteEditorDialog = NoteEditorDialog()
                 noteEditorDialog.show(parentFragmentManager,
                     noteEditorDialog.tag)
+                Log.d("NoteFragment", noteEditorDialog.tag.toString())
             }
 
         }
