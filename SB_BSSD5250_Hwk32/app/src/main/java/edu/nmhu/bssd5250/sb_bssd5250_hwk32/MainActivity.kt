@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                     //setReorderingAllowed(true)
 
                     // do not add more than 10 notes
-                    if (notes > 3) {
+                    if (notes >= 10) {
                         //TODO add Alert Dialog here
                         val alert: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
                         alert.setTitle("Notes limit Exceeded")

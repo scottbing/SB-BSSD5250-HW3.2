@@ -1,6 +1,7 @@
 package edu.nmhu.bssd5250.sb_bssd5250_hwk32
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -46,14 +47,14 @@ class NoteFragment : Fragment() {
 
         setFragmentResultListener("noteDataChange") { _, bundle ->
             val name = bundle.getString("nameKey")
-            nameView.text = name.toString()
             val date = bundle.getString("dateKey")
-            dateView.text = date.toString()
             val desc = bundle.getString("descKey")
+            nameView.text = name.toString()
+            dateView.text = date.toString()
             descView.text = desc.toString()
-            Log.d("NoteFragment",name.toString())
-            Log.d("NoteFragment",date.toString())
-            Log.d("NoteFragment",desc.toString())
+            Log.d("NF: Name",name.toString())
+            Log.d("NF: Date",date.toString())
+            Log.d("NF: Desc",desc.toString())
         }
     }
 

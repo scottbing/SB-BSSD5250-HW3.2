@@ -2,6 +2,7 @@ package edu.nmhu.bssd5250.sb_bssd5250_hwk32
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -35,14 +36,18 @@ class NoteEditorDialog : DialogFragment() {
             setView(linearLayout)
             setPositiveButton("Save") { _,_ ->
                 val name = editName.text.toString()
-                setFragmentResult("noteDataChange",
-                    bundleOf("nameKey" to name))
                 val date = editDate.text.toString()
-                setFragmentResult("noteDataChange",
-                    bundleOf("dateKey" to date))
                 val desc = editDesc.text.toString()
                 setFragmentResult("noteDataChange",
-                    bundleOf("descKey" to desc))
+                    bundleOf(
+                        "name" to name,
+                        "date" to date,
+                        "desc" to desc
+                    ))
+
+                Log.d("NED: Name",name.toString())
+                Log.d("NED: Date",date.toString())
+                Log.d("NED: Desc",desc.toString())
             }
             setNegativeButton("Cancel") { _,_ -> }
         }
