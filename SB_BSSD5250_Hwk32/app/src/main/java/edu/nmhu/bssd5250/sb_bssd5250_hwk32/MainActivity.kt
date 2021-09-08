@@ -14,8 +14,8 @@ import android.content.DialogInterface
 
 class MainActivity : AppCompatActivity() {
 
-    private var notes = 0  // number of notes
     private var fid = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                     //setReorderingAllowed(true)
 
                     // do not add more than 10 notes
-                    if (notes >= 10) {
+                    if (supportFragmentManager.fragments.size >= 10) {
                         //TODO add Alert Dialog here
                         val alert: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
                         alert.setTitle("Notes limit Exceeded")
@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity() {
                         alert.show()
                     }
                     else {
-                        add(fid, NoteFragment.newInstance(), null)
-                        notes+=1
+                        add(fid, NoteFragment.newInstance(View.generateViewId()), null)
                     }
                 }
             }

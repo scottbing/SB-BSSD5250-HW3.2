@@ -1,7 +1,6 @@
 package edu.nmhu.bssd5250.sb_bssd5250_hwk32
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -10,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 
@@ -34,6 +33,8 @@ class NoteFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var resultKey:String = ""
+
     private lateinit var nameView: TextView
     private lateinit var dateView: TextView
     private lateinit var descView: TextView
@@ -45,16 +46,10 @@ class NoteFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
-        setFragmentResultListener("noteDataChange") { _, bundle ->
-            val name = bundle.getString("nameKey")
-            val date = bundle.getString("dateKey")
-            val desc = bundle.getString("descKey")
-            nameView.text = name.toString()
-            dateView.text = date.toString()
-            descView.text = desc.toString()
-            Log.d("NF: Name",name.toString())
-            Log.d("NF: Date",date.toString())
-            Log.d("NF: Desc",desc.toString())
+        setFragmentResultListener(resultKey) { requestKey, bundle ->
+            nameView.text = bundle.getString("nameKey").toString()
+            dateView.text = bundle.getString("dateKey").toString()
+            descView.text = bundle.getString("descKey").toString()
         }
     }
 
@@ -64,13 +59,13 @@ class NoteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         nameView = TextView(context).apply {
-            setText(R.string.name_place_holder)
+            setHint(R.string.name_place_holder)
         }
         dateView = TextView(context).apply {
-            setText(R.string.date_place_holder)
+            setHint(R.string.date_place_holder)
         }
         descView = TextView(context).apply {
-            setText(R.string.desc_place_holder)
+            setHint(R.string.desc_place_holder)
         }
 
         val textHolderLL = LinearLayoutCompat(requireContext()).apply {
@@ -87,7 +82,7 @@ class NoteFragment : Fragment() {
         }
         //End Text for the left side
 
-        //Deletebutton on hte right side
+        //Deletebutton on the right side
         val deleteButton = Button(requireContext()).apply {
             id = View.generateViewId()
             text = "Delete"
@@ -128,10 +123,13 @@ class NoteFragment : Fragment() {
                 RelativeLayout.LEFT_OF, deleteButton.id)
 
             setOnClickListener {
-                val noteEditorDialog = NoteEditorDialog()
-                noteEditorDialog.show(parentFragmentManager,
-                    noteEditorDialog.tag)
-                Log.d("NoteFragment", noteEditorDialog.tag.toString())
+                val currentData = bundleOf(
+                    "name" to nameView.text,
+                    "date" to dateView.text,
+                    "desc" to descView.text,
+                )
+                NoteEditorDialog.newInstance(resultKey, currentData).show(
+                    parentFragmentManager, NoteEditorDialog.TAG)
             }
 
         }
@@ -153,20 +151,10 @@ class NoteFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NoteFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(unique:Int) =
             NoteFragment().apply {
-                arguments = Bundle().apply {
-                }
+                resultKey = "NoteDataChange$unique"
             }
     }
 }
