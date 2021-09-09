@@ -9,12 +9,20 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NoteEditorDialog : DialogFragment() {
 
     private var targetResultKey:String = ""
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        // format today's date
+        val date: Date = Calendar.getInstance().getTime()
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
+        var strDate: String = dateFormat.format(date)
 
         val editName = EditText(context).apply {
             setHint(R.string.name_place_holder)
@@ -45,10 +53,6 @@ class NoteEditorDialog : DialogFragment() {
                                     "dateKey" to editDate.text.toString(),
                                     "descKey" to editDesc.text.toString()
                     ))
-
-                /*Log.d("NED: Name",editName.text.toString())
-                Log.d("NED: Date",editDate.text.toString())
-                Log.d("NED: Desc",editDesc.text.toString())*/
             }
             setNegativeButton("Cancel") { _,_ -> }
         }

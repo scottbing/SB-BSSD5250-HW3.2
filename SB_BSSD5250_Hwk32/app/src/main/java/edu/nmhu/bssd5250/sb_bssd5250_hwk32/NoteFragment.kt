@@ -1,7 +1,9 @@
 package edu.nmhu.bssd5250.sb_bssd5250_hwk32
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,11 +13,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,7 +39,8 @@ class NoteFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private var resultKey:String = ""
+    private var resultKey: String = ""
+    private var setRedOn:  Boolean = false
 
     private lateinit var nameView: TextView
     private lateinit var dateView: TextView
@@ -54,6 +61,8 @@ class NoteFragment : Fragment() {
     }
 
     val buttonWidth:Int = 200
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SimpleDateFormat")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +71,12 @@ class NoteFragment : Fragment() {
             setHint(R.string.name_place_holder)
         }
         dateView = TextView(context).apply {
-            setHint(R.string.date_place_holder)
+            // Format today's date
+            val current = LocalDateTime.now()
+            //val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy. HH:mm:ss")
+            val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+            var strDate: String =  current.format(formatter)
+            setText(strDate)
         }
         descView = TextView(context).apply {
             setHint(R.string.desc_place_holder)
@@ -97,7 +111,7 @@ class NoteFragment : Fragment() {
                 AlertDialog.Builder(requireContext()).apply {
                     setTitle("Delete Note?")
                     setPositiveButton("Yes", DialogInterface.OnClickListener{
-                        dialogInterface, i ->
+                            dialogInterface, i ->
                         activity?.supportFragmentManager?.commit {
                             remove(this@NoteFragment)
                         }
@@ -152,9 +166,17 @@ class NoteFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(unique:Int) =
+        fun newInstance(unique: Int, which: Boolean) =
             NoteFragment().apply {
                 resultKey = "NoteDataChange$unique"
+                setRedOn = which
             }
+    }
+
+    override fun onStart() {
+        Log.d("NoteFragment", "onStart()")
+        super.onStart()
+        if (setRedOn)
+            getView()?.setBackgroundColor(Color.RED)
     }
 }
